@@ -243,18 +243,6 @@
   margin: 0 12px;
 }
 
-.recaptcha-container {
-  display: flex;
-  justify-content: center;
-  margin: 25px 0;
-  transform: scale(0.9);
-  transform-origin: 0 0;
-}
-
-.recaptcha-container > div {
-  width: 100% !important;
-}
-
 .google-login-container {
   width: 100%;
   display: flex;
