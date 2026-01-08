@@ -21,18 +21,13 @@ export function LoginForm({ onSuccess }: LoginProps) {
     e.preventDefault();
     setError('');
 
-    if (!recaptchaToken) {
-      setError('Lütfen reCAPTCHA\'yı tamamlayın');
-      return;
-    }
-
     setLoading(true);
 
     try {
       const response = await userAPI.login({ 
         username, 
         password,
-        recaptcha_token: recaptchaToken 
+        recaptcha_token: recaptchaToken || '' 
       });
       login(response.data);
       if (onSuccess) onSuccess();
@@ -45,11 +40,6 @@ export function LoginForm({ onSuccess }: LoginProps) {
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
     setError('');
-
-    if (!recaptchaToken) {
-      setError('Lütfen reCAPTCHA\'yı tamamlayın');
-      return;
-    }
 
     setLoading(true);
 
@@ -116,7 +106,7 @@ export function LoginForm({ onSuccess }: LoginProps) {
         />
       </div>
 
-      <button type="submit" className="btn-submit" disabled={loading || !recaptchaToken}>
+      <button type="submit" className="btn-submit" disabled={loading}>
         {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
       </button>
 
