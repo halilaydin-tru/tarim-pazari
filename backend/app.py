@@ -41,8 +41,16 @@ app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', 'noreply@ta
 db.init_app(app)
 mail = Mail(app)
 
-# CORS configuration - allow all origins for now
-CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
+# CORS configuration - allow all origins
+CORS(app)
+
+# Add CORS headers to all responses
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
 
 # Environment variables
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
