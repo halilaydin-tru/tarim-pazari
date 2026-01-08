@@ -227,6 +227,7 @@
   cursor: not-allowed;
 }
 
+/* Responsive - Tablet */
 @media (max-width: 1024px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
@@ -234,5 +235,72 @@
 
   .form-row {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .dashboard {
+    padding: 15px;
+  }
+
+  .dashboard-container h1 {
+    font-size: 1.8rem;
+  }
+
+  .dashboard-container > p {
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+
+  .dashboard-grid {
+    gap: 20px;
+  }
+
+  .dashboard-section {
+    padding: 20px;
+  }
+
+  .dashboard-section h2 {
+    font-size: 1.3rem;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 10px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .product-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .btn-delete {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Responsive - Small Mobile */
+@media (max-width: 480px) {
+  .dashboard {
+    padding: 10px;
+  }
+
+  .dashboard-container h1 {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-section {
+    padding: 15px;
+    border-radius: 10px;
+  }
+
+  .dashboard-section h2 {
+    font-size: 1.2rem;
+    padding-bottom: 10px;
   }
 }
