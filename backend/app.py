@@ -58,6 +58,23 @@ HOST = os.getenv('HOST', '0.0.0.0')
 PORT = int(os.getenv('PORT', 5000))
 RECAPTCHA_SECRET_KEY = os.getenv('RECAPTCHA_SECRET_KEY', '')
 
+# Initialize database on app startup (works with gunicorn)
+with app.app_context():
+    db.create_all()
+    # Create initial categories if not exist
+    if Category.query.count() == 0:
+        categories = [
+            Category(name='Tahıl', description='Buğday, arpa, çavdar'),
+            Category(name='Sebze', description='Domates, biber, salatalık'),
+            Category(name='Meyve', description='Elma, armut, üzüm'),
+            Category(name='Hayvansal Ürünler', description='Süt, yumurta, et'),
+            Category(name='Yağlı Tohumlar', description='Ayçiçeği, kanola'),
+            Category(name='Diğer', description='Diğer tarım ürünleri')
+        ]
+        db.session.add_all(categories)
+        db.session.commit()
+    print("Database initialized!")
+
 # Root endpoint
 @app.route('/', methods=['GET'])
 def root():
