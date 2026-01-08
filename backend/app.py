@@ -122,90 +122,32 @@ def register():
 
 @app.route('/api/users/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    
-    if not data or not all(k in data for k in ['username', 'password']):
-        return jsonify({'error': 'Missing username or password'}), 400
-    
-    # Verify reCAPTCHA token (temporarily disabled for testing)
-    # recaptcha_token = data.get('recaptcha_token')
-    # if RECAPTCHA_SECRET_KEY and recaptcha_token:
-    #     try:
-    #         recaptcha_response = requests.post(
-    #             'https://www.google.com/recaptcha/api/siteverify',
-    #             data={
-    #                 'secret': RECAPTCHA_SECRET_KEY,
-    #                 'response': recaptcha_token
-    #             },
-    #             timeout=5
-    #         )
-    #         recaptcha_data = recaptcha_response.json()
-    #         
-    #         if not recaptcha_data.get('success'):
-    #             return jsonify({'error': 'reCAPTCHA verification failed'}), 400
-    #     except Exception as e:
-    #         print(f"reCAPTCHA verification error: {str(e)}")
-    
-    # Login with username or email
-    user = User.query.filter_by(username=data['username']).first()
-    if not user:
-        user = User.query.filter_by(email=data['username']).first()
-    
-    if not user or not check_password_hash(user.password, data['password']):
-        return jsonify({'error': 'Invalid username/email or password'}), 401
-    
-    # Send security notification email
     try:
-        msg = Message(
-            subject='Güvenlik Bildirimi - Hesabınız Açıldı',
-            recipients=[user.email],
-            html=f"""
-            <div style="font-family: Arial, sans-serif; background-color: #f5f5f5; padding: 20px;">
-                <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 8px;">
-                    <h2 style="color: #8B4FC2; text-align: center;">🔒 Güvenlik Bildirimi</h2>
-                    
-                    <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                        Merhaba <strong>{user.full_name}</strong>,
-                    </p>
-                    
-                    <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                        Tarım Pazarı hesabınız az önce açıldı.
-                    </p>
-                    
-                    <div style="background-color: #fff3cd; padding: 20px; border-left: 4px solid #ffc107; margin: 20px 0; border-radius: 4px;">
-                        <p style="color: #856404; margin: 0;"><strong>⚠️ Eğer siz bu girişi yapmadıysanız:</strong></p>
-                        <p style="color: #856404; margin: 10px 0 0 0;">Lütfen hemen şifrenizi değiştirin veya destek ekibine başvurun.</p>
-                    </div>
-                    
-                    <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                        <strong>Giriş Bilgileri:</strong><br>
-                        Tarih: {datetime.now().strftime('%d.%m.%Y %H:%M')}<br>
-                        Kullanıcı: {user.username}
-                    </p>
-                    
-                    <hr style="border: none; border-top: 1px solid #ddd; margin: 30px 0;">
-                    
-                    <p style="color: #999; font-size: 14px; text-align: center;">
-                        Sorunuz varsa: <strong>support@tarim-pazari.com</strong>
-                    </p>
-                </div>
-            </div>
-            """
-        )
-        mail.send(msg)
+        data = request.get_json()
+        
+        if not data or not all(k in data for k in ['username', 'password']):
+            return jsonify({'error': 'Missing username or password'}), 400
+        
+        # Login with username or email
+        user = User.query.filter_by(username=data['username']).first()
+        if not user:
+            user = User.query.filter_by(email=data['username']).first()
+        
+        if not user or not check_password_hash(user.password, data['password']):
+            return jsonify({'error': 'Invalid username/email or password'}), 401
+        
+        return jsonify({
+            'id': user.id,
+            'username': user.username,
+            'email': user.email,
+            'full_name': user.full_name,
+            'role': user.role,
+            'location': user.location,
+            'phone': user.phone
+        }), 200
     except Exception as e:
-        # E-posta gönderme başarısız olursa, login yine de devam eder
-        print(f"Güvenlik e-postası gönderme hatası: {str(e)}")
-    
-    return jsonify({
-        'id': user.id,
-        'username': user.username,
-        'email': user.email,
-        'full_name': user.full_name,
-        'role': user.role,
-        'location': user.location,
-        'phone': user.phone
-    }), 200
+        print(f"Login error: {str(e)}")
+        return jsonify({'error': f'Server error: {str(e)}'}), 500
 
 @app.route('/api/users/google-login', methods=['POST'])
 def google_login():
