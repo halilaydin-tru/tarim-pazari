@@ -29,7 +29,8 @@ export function LoginForm({ onSuccess }: LoginProps) {
       login(response.data);
       if (onSuccess) onSuccess();
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Giriş başarısız');
+      console.error('Login error:', err);
+      setError(err.response?.data?.error || err.message || 'Giriş başarısız');
     } finally {
       setLoading(false);
     }
