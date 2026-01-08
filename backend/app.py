@@ -41,15 +41,27 @@ app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', 'noreply@ta
 db.init_app(app)
 mail = Mail(app)
 
-# CORS configuration - allow all origins
-CORS(app)
+# Allowed origins for CORS
+ALLOWED_ORIGINS = [
+    'https://tarim-pazar.vercel.app',
+    'https://tarim-pazar-*.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000'
+]
+
+# CORS configuration - restricted to allowed origins
+CORS(app, origins=ALLOWED_ORIGINS, supports_credentials=True)
 
 # Add CORS headers to all responses
 @app.after_request
 def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    origin = request.headers.get('Origin', '')
+    # Only allow specific origins
+    if any(origin.startswith(allowed.replace('*', '')) for allowed in ALLOWED_ORIGINS):
+        response.headers.add('Access-Control-Allow-Origin', origin)
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
     return response
 
 # Environment variables
