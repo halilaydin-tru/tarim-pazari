@@ -112,7 +112,7 @@ export function LoginForm({ onSuccess }: LoginProps) {
       <div className="recaptcha-container">
         <ReCAPTCHA
           sitekey="6LfUx0MsAAAAADpBh1ZD2zYyCBPDGOqi9mnpHU-N"
-          onChange={(token) => setRecaptchaToken(token)}
+          onChange={(token: string | null) => setRecaptchaToken(token)}
         />
       </div>
 

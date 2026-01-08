@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { userAPI } from '../api/api';
 import '../styles/Auth.css';
 
@@ -21,7 +20,6 @@ export function RegisterForm({ onSuccess }: RegisterProps) {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -42,7 +40,7 @@ export function RegisterForm({ onSuccess }: RegisterProps) {
 
     try {
       const { confirmPassword, ...registerData } = formData;
-      const response = await userAPI.register(registerData);
+      await userAPI.register(registerData);
       // Kayıt başarılı
       setSuccess('Kayıt başarılı! Lütfen giriş yapınız.');
       // 2 saniye sonra giriş sayfasına dön
