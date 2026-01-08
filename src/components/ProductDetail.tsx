@@ -15,9 +15,11 @@ interface Product {
   quantity: number
   unit: string
   category_id: number
+  category_name?: string
   harvest_date: string
   seller_id: number
   location: string
+  image_url?: string
 }
 
 interface Seller {
@@ -91,6 +93,17 @@ export function ProductDetail({ productId, onClose }: ProductDetailProps) {
         <button className="close-btn" onClick={onClose}>✕</button>
 
         <div className="detail-content">
+          {/* Product Image */}
+          {product.image_url && (
+            <div className="product-image-container">
+              <img 
+                src={product.image_url.startsWith('http') ? product.image_url : `https://tarim-pazari-api.onrender.com${product.image_url}`} 
+                alt={product.name}
+                className="product-detail-image"
+              />
+            </div>
+          )}
+
           {/* Product Info */}
           <section className="product-section">
             <h2>{product.name}</h2>

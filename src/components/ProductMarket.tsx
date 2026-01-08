@@ -15,6 +15,7 @@ interface Product {
   category_name: string;
   location: string;
   harvest_date?: string;
+  image_url?: string;
 }
 
 interface Category {
@@ -110,6 +111,16 @@ export function ProductMarket() {
         <div className="products-grid">
           {products.map((product) => (
             <div key={product.id} className="product-card" onClick={() => setSelectedProductId(product.id)} style={{ cursor: 'pointer' }}>
+              {/* Product Image */}
+              {product.image_url && (
+                <div className="product-image">
+                  <img 
+                    src={product.image_url.startsWith('http') ? product.image_url : `https://tarim-pazari-api.onrender.com${product.image_url}`}
+                    alt={product.name}
+                  />
+                </div>
+              )}
+
               <div className="product-header">
                 <h3>{product.name}</h3>
                 <span className="category-badge">{product.category_name}</span>
