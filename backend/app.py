@@ -48,6 +48,11 @@ HOST = os.getenv('HOST', '0.0.0.0')
 PORT = int(os.getenv('PORT', 5000))
 RECAPTCHA_SECRET_KEY = os.getenv('RECAPTCHA_SECRET_KEY', '')
 
+# Root endpoint
+@app.route('/', methods=['GET'])
+def root():
+    return jsonify({'message': 'Tarım Pazarı API', 'version': '1.0'})
+
 # Health check
 @app.route('/api/health', methods=['GET'])
 def health():
