@@ -9,4 +9,4 @@ COPY backend/ .
 
 EXPOSE $PORT
 
-CMD ["python", "app.py"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "4", "--timeout", "120", "app:app"]
