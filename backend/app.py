@@ -629,4 +629,10 @@ if __name__ == '__main__':
     
     # Use PORT environment variable for Railway
     port = int(os.getenv('PORT', 5000))
+    
+    # Initialize database on startup
+    with app.app_context():
+        db.create_all()
+        print("Database initialized")
+    
     app.run(debug=DEBUG, host='0.0.0.0', port=port)
