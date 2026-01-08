@@ -41,13 +41,8 @@ app.config['MAIL_DEFAULT_SENDER'] = os.getenv('MAIL_DEFAULT_SENDER', 'noreply@ta
 db.init_app(app)
 mail = Mail(app)
 
-# CORS configuration - allow Vercel frontend
-CORS(app, origins=[
-    "https://tarim-pazar.vercel.app",
-    "https://*.vercel.app",
-    "http://localhost:5173",
-    "http://localhost:3000"
-], supports_credentials=True)
+# CORS configuration - allow all origins for now
+CORS(app, resources={r"/api/*": {"origins": "*"}}, supports_credentials=True)
 
 # Environment variables
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
