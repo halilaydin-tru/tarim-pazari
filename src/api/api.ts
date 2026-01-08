@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Production API URL
-const API_BASE_URL = 'https://tarim-pazari-api.onrender.com/api';
+// Use same domain - Vercel will proxy to Render backend
+const API_BASE_URL = '/api';
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
