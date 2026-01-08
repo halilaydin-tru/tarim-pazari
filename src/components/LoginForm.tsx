@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { useAuth } from '../context/AuthContext';
 import { userAPI } from '../api/api';
 import { GoogleLogin } from '@react-oauth/google';
@@ -14,7 +13,6 @@ export function LoginForm({ onSuccess }: LoginProps) {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [recaptchaToken, setRecaptchaToken] = useState<string | null>(null);
   const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,8 +24,7 @@ export function LoginForm({ onSuccess }: LoginProps) {
     try {
       const response = await userAPI.login({ 
         username, 
-        password,
-        recaptcha_token: recaptchaToken || '' 
+        password
       });
       login(response.data);
       if (onSuccess) onSuccess();
@@ -96,13 +93,6 @@ export function LoginForm({ onSuccess }: LoginProps) {
           onChange={(e) => setPassword(e.target.value)}
           required
           disabled={loading}
-        />
-      </div>
-
-      <div className="recaptcha-container">
-        <ReCAPTCHA
-          sitekey="6LfUx0MsAAAAADpBh1ZD2zYyCBPDGOqi9mnpHU-N"
-          onChange={(token: string | null) => setRecaptchaToken(token)}
         />
       </div>
 
